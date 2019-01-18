@@ -2,5 +2,13 @@
   "name": "Peppi Goolge Calendar Extension",
   "description": "",
   "version": "1.0",
+  "permissions": ["declarativeContent"],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "page_action": {
+    "default_popup": "popup.html"
+  },
   "manifest_version": 2
 }
