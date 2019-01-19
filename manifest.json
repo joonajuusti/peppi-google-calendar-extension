@@ -2,13 +2,20 @@
   "name": "Peppi Goolge Calendar Extension",
   "description": "",
   "version": "1.0",
-  "permissions": ["declarativeContent"],
+  "permissions": ["declarativeContent", "identity", "activeTab"],
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtkvJ1Mlbqf6/mEns4swgaFsIloPsU+TO+t56LYOaOQ8xaECvhz+neScATRTPOqfGGmE1J4m4MGPwn3pzdJA6XEeeteRC0bjnjqXmtnFXNdQUX3IxFP7mmaAWcqO2/ejvKNPTPHxaHkwOlJWJKgCmP096we6ES/u7ljmTl+My8ZVKggunYf7HIwnzxkZiNtNwvRfckquyzuMwkSmpgRnzayF0xSTKzZzW2FpWbx/XxGhdJSRmKKPBjxyXP9Dnr32rZgs21J0J11ikoBjCI5VrMnVZ2Sm7AmK3w6N9s5PRtnHCmjTG5AZItXz2pD8zo3W4CsfwqJ7oXMKG0FexBRbmHQIDAQAB",
   "background": {
     "scripts": ["background.js"],
     "persistent": false
   },
   "page_action": {
     "default_popup": "popup.html"
+  },
+  "oauth2": {
+    "client_id": "291374688407-eguo8n8de27pcbms11cri68u9k0nf6ll.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/calendar.events"
+    ]
   },
   "manifest_version": 2
 }
