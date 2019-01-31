@@ -1,18 +1,4 @@
-let createEventButton = document.getElementById('createEvent');
-
-const event = {
-  'summary': 'Test Event',
-  'location': 'Test Location',
-  'description': 'Testing the calendar API through Chrome extension.',
-  'start': {
-    'dateTime': '2019-01-21T09:00:00+02:00',
-    'timeZone': 'Europe/Helsinki'
-  },
-  'end': {
-    'dateTime': '2019-01-21T17:00:00+02:00',
-    'timeZone': 'Europe/Helsinki'
-  }
-};
+const createEventButton = document.getElementById('createEvent');
 
 createEventButton.onclick = () => {
   chrome.identity.getAuthToken(function(token) {
@@ -26,13 +12,22 @@ createEventButton.onclick = () => {
       headers: {
         'Authorization': 'Bearer ' + token,
         'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(event)
+      }
     }
 
-    fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', init)
-      .then(response => response.json())
-      .then(data => alert(JSON.stringify(data)))
-      .catch(() => alert('error'));
-});
+    chrome.runtime.onMessage.addListener(
+      function(request) {
+        const data = request.data;
+        data.forEach(data => {
+          fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', { ...init, body: JSON.stringify(data)})
+            .then(response => response.json())
+            .catch(() => alert('error'));
+        });
+      }
+    );
+
+    chrome.tabs.executeScript({
+      file: 'schedule.js'
+    });
+  });
 }
