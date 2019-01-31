@@ -17,5 +17,12 @@
       "https://www.googleapis.com/auth/calendar.events"
     ]
   },
+  "content_scripts": [
+    {
+      "matches": ["https://opas.peppi.utu.fi/*"],
+      "js": ["jquery-3.3.1.min.js"],
+      "run_at": "document_end"
+    }
+  ],
   "manifest_version": 2
 }
