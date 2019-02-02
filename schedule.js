@@ -1,3 +1,10 @@
+function expandStudyTimes(collapseLinkText) {
+  const collapseLink = $("a:contains(" + collapseLinkText + ")")[0];
+  if (collapseLink) {
+    collapseLink.click();
+  }    
+}
+
 function findElementByText(string) {
   const text = $("h6:contains(" + string + ")")
     .siblings()
@@ -29,6 +36,7 @@ function parseEventObject(string) {
   };
 }
 
+expandStudyTimes('Näytä lisää');
 var text = findElementByText('Opetusajat');
 var splitText = text.split('  ');
 var eventObjects = splitText.map(parseEventObject)
