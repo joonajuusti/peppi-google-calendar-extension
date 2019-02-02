@@ -5,6 +5,15 @@ expandStudyTimes = collapseLinkText => {
   }    
 }
 
+findCourseName = () => {
+  const courseInfo = $('h4').text();
+  const courseName = courseInfo.split(' ');
+  courseName.pop();
+  courseName.pop();
+  courseName.shift();
+  return courseName.join(' ').slice(0, -1);
+}
+
 findStudyInfo = studyInfoHeading => {
   const studyInfo = $(`h6:contains(${studyInfoHeading})`)
     .siblings()
@@ -26,7 +35,7 @@ parseEventObject = lectureInfoString => {
   const location = `${lectureHall} ${buildingName}`;
   const [startTime, endTime] = lectureInfo[2].split('-').map(time => formatDateTime(lectureInfo[1], time));
   return {
-    summary: 'Test',
+    summary: courseName,
     location,
     start: {
       dateTime: startTime,
@@ -40,6 +49,7 @@ parseEventObject = lectureInfoString => {
 }
 
 expandStudyTimes('Näytä lisää');
+var courseName = findCourseName();
 var studyInfo = findStudyInfo('Opetusajat');
 var eventObjects = studyInfo.split('  ').map(parseEventObject);
 console.log(eventObjects);
