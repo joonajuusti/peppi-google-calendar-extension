@@ -1,9 +1,9 @@
 const createEventButton = document.getElementById('createEvent');
 
 createEventButton.onclick = () => {
-  chrome.identity.getAuthToken(function(token) {
+  chrome.identity.getAuthToken(token => {
     if (chrome.runtime.lastError) {
-        alert(chrome.runtime.lastError.message);
+        alert('Something went wrong. Please make sure that you have logged in with your Google account.');
         return;
     }
 
@@ -11,18 +11,19 @@ createEventButton.onclick = () => {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + token,
-        'Content-Type': 'application/json'
-      }
-    }
+        'Content-Type': 'application/json',
+      },
+    };
 
     chrome.runtime.onMessage.addListener(
-      function(request) {
-        const data = request.data;
-        data.forEach(data => {
-          fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', { ...init, body: JSON.stringify(data)})
-            .then(response => response.json())
-            .catch(() => alert('error'));
-        });
+      request => {
+        const eventObjects = request.data;
+        const promises = eventObjects.map(eventObject => (
+          fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', { ...init, body: JSON.stringify(eventObject)}))
+        );
+        Promise.all(promises)
+          .then(() => alert('Added lecture times successfully to your Google Calendar.')
+          .catch(() => alert('Something went wrong when adding the events to your Google Calendar.')));
       }
     );
 
