@@ -1,45 +1,47 @@
-function expandStudyTimes(collapseLinkText) {
-  const collapseLink = $("a:contains(" + collapseLinkText + ")")[0];
+expandStudyTimes = collapseLinkText => {
+  const collapseLink = $(`a:contains(${collapseLinkText})`)[0];
   if (collapseLink) {
     collapseLink.click();
   }    
 }
 
-function findElementByText(string) {
-  const text = $("h6:contains(" + string + ")")
+findStudyInfo = studyInfoHeading => {
+  const studyInfo = $(`h6:contains(${studyInfoHeading})`)
     .siblings()
     .find("div:first-child")
     .text();
-  return text;
+  return studyInfo;
 }
 
-function formatDateTime(date, time) {
-  splitDate = date.split('.')
-  return `${splitDate[2]}-${splitDate[1]}-${splitDate[0]}T${time}:00`
+formatDateTime = (date, time) => {
+  //Date is displayed in the page as a single string in the following format: DD.MM.YYYY
+  splitDate = date.split('.');
+  return `${splitDate[2]}-${splitDate[1]}-${splitDate[0]}T${time}:00`;
 }
 
-function parseEventObject(string) {
-  const splitString = string.trim().split(' ');
-  const location = `${splitString[3]} ${splitString[4]}`
-  const startAndEndTimes = splitString[2].split('-').map(time => formatDateTime(splitString[1], time));
+parseEventObject = lectureInfoString => {
+  const lectureInfo = lectureInfoString.trim().split(' ');
+  const lectureHall = lectureInfo[3];
+  const buildingName = lectureInfo[4]
+  const location = `${lectureHall} ${buildingName}`;
+  const [startTime, endTime] = lectureInfo[2].split('-').map(time => formatDateTime(lectureInfo[1], time));
   return {
     summary: 'Test',
     location,
     start: {
-      dateTime: startAndEndTimes[0],
-      timeZone: 'Europe/Helsinki'
+      dateTime: startTime,
+      timeZone: 'Europe/Helsinki',
     },
     end: {
-      dateTime: startAndEndTimes[1],
-      timeZone: 'Europe/Helsinki'
+      dateTime: endTime,
+      timeZone: 'Europe/Helsinki',
     }
   };
 }
 
 expandStudyTimes('Näytä lisää');
-var text = findElementByText('Opetusajat');
-var splitText = text.split('  ');
-var eventObjects = splitText.map(parseEventObject)
+var studyInfo = findStudyInfo('Opetusajat');
+var eventObjects = studyInfo.split('  ').map(parseEventObject);
 console.log(eventObjects);
 
 chrome.runtime.sendMessage({data: eventObjects});
