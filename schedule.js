@@ -48,10 +48,23 @@ parseEventObject = lectureInfoString => {
   };
 }
 
-expandStudyTimes('Näytä lisää');
+setLanguageSpecificStrings = () => {
+  const language = window.location.pathname.slice(1,3);
+  let showMore, lectureTimes;
+  if (language == 'en') {
+    showMore = 'Show more';
+    lectureTimes = 'Teaching';
+  } else {
+    showMore = 'Näytä lisää';
+    lectureTimes = 'Opetusajat'
+  }
+  return { showMore, lectureTimes }
+}
+
+var translatedStrings = setLanguageSpecificStrings();
+expandStudyTimes(translatedStrings.showMore);
 var courseName = findCourseName();
-var studyInfo = findStudyInfo('Opetusajat');
+var studyInfo = findStudyInfo(translatedStrings.lectureTimes);
 var eventObjects = studyInfo.split('  ').map(parseEventObject);
 console.log(eventObjects);
-
-chrome.runtime.sendMessage({data: eventObjects});
+//chrome.runtime.sendMessage({data: eventObjects});
