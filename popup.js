@@ -15,15 +15,16 @@ createEventButton.onclick = () => {
       },
     };
 
+    const postEvent = async eventObject => {
+      await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', { ...init, body: JSON.stringify(eventObject)});
+    }
+
     chrome.runtime.onMessage.addListener(
-      request => {
+      async request => {
         const eventObjects = request.data;
-        const promises = eventObjects.map(eventObject => (
-          fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', { ...init, body: JSON.stringify(eventObject)}))
-        );
-        Promise.all(promises)
-          .then(() => alert('Added lecture times successfully to your Google Calendar.')
-          .catch(() => alert('Something went wrong when adding the events to your Google Calendar.')));
+        for (const eventObject of eventObjects) {
+          await postEvent(eventObject);
+        }
       }
     );
 
