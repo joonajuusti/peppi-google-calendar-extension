@@ -3,13 +3,40 @@
   <head>
     <style>
       button {
-        height: 40px;
+        height: 60px;
+        width: 60px;
+      }
+    </style>
+    <style>
+      .loader {
+        border: 8px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 8px solid #3498db;
         width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+    <style>
+      .wrapper {
+        height: 80px;
+        width: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     </style>
   </head>
   <body>
-    <button id="createEvent"></button>
+    <div class="wrapper">
+      <p id="statusInfo"></p>
+      <button id="createEvent">Add</button>
+      <div id="loader"></div>
+    </div>
     <script src="popup.js"></script>
   </body>
 </html>

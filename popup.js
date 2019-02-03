@@ -1,8 +1,14 @@
 const createEventButton = document.getElementById('createEvent');
+const loaderDiv = document.getElementById('loader');
+const statusInfo = document.getElementById('statusInfo');
 
 createEventButton.onclick = () => {
+  createEventButton.style.display = 'none';
+  loaderDiv.classList.add('loader');
   chrome.identity.getAuthToken(token => {
     if (chrome.runtime.lastError) {
+      loaderDiv.classList.remove('loader');
+      createEventButton.style.display = 'inline-block';
         alert('Something went wrong. Please make sure that you have logged in with your Google account.');
         return;
     }
@@ -25,6 +31,8 @@ createEventButton.onclick = () => {
         for (const eventObject of eventObjects) {
           await postEvent(eventObject);
         }
+        loaderDiv.classList.remove('loader');
+        statusInfo.innerHTML = 'Done!';
       }
     );
 
