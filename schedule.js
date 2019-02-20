@@ -69,5 +69,4 @@ expandStudyTimes(translatedStrings.showMore);
 var courseName = findCourseName();
 var studyInfo = findStudyInfo(translatedStrings.lectureTimes);
 var eventObjects = studyInfo.split('  ').map(parseEventObject);
-console.log(eventObjects);
 chrome.runtime.sendMessage({ data: eventObjects });
