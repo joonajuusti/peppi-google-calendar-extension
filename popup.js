@@ -72,12 +72,12 @@ createEventButton.onclick = () => {
   createEventButton.style.display = 'none';
   colorSelection.style.display = 'none';
   loaderDiv.classList.add('loader');
-  chrome.identity.getAuthToken(token => {
+  chrome.identity.getAuthToken({interactive: true}, token => {
     if (chrome.runtime.lastError) {
       loaderDiv.classList.remove('loader');
       createEventButton.style.display = 'inline-block';
       colorSelection.style.display = 'inline-block';
-      alert('Something went wrong. Please make sure that you have logged in with your Google account.');
+      alert(JSON.stringify(chrome.runtime.lastError.message))
       return;
     }
 
