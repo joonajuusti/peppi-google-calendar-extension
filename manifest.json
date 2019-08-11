@@ -1,11 +1,17 @@
 {
   "name": "Peppi Google Calendar Extension",
   "description": "",
-  "version": "2.0.1",
-  "permissions": ["declarativeContent", "identity", "activeTab"],
+  "version": "2.0.2",
+  "permissions": [
+    "declarativeContent",
+    "identity",
+    "activeTab"
+  ],
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtkvJ1Mlbqf6/mEns4swgaFsIloPsU+TO+t56LYOaOQ8xaECvhz+neScATRTPOqfGGmE1J4m4MGPwn3pzdJA6XEeeteRC0bjnjqXmtnFXNdQUX3IxFP7mmaAWcqO2/ejvKNPTPHxaHkwOlJWJKgCmP096we6ES/u7ljmTl+My8ZVKggunYf7HIwnzxkZiNtNwvRfckquyzuMwkSmpgRnzayF0xSTKzZzW2FpWbx/XxGhdJSRmKKPBjxyXP9Dnr32rZgs21J0J11ikoBjCI5VrMnVZ2Sm7AmK3w6N9s5PRtnHCmjTG5AZItXz2pD8zo3W4CsfwqJ7oXMKG0FexBRbmHQIDAQAB",
   "background": {
-    "scripts": ["background.js"],
+    "scripts": [
+      "background.js"
+    ],
     "persistent": false
   },
   "page_action": {
@@ -17,12 +23,5 @@
       "https://www.googleapis.com/auth/calendar.events"
     ]
   },
-  "content_scripts": [
-    {
-      "matches": ["https://opas.peppi.utu.fi/*"],
-      "js": ["jquery-3.3.1.min.js"],
-      "run_at": "document_end"
-    }
-  ],
   "manifest_version": 2
 }

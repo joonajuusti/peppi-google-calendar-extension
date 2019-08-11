@@ -1,24 +1,28 @@
 expandStudyTimes = collapseLinkText => {
-  const collapseLink = $(`a:contains(${collapseLinkText})`)[0];
-  if (collapseLink) {
-    collapseLink.click();
-  }    
+  for (el of document.querySelectorAll('div a')) {
+    if (el.innerText === collapseLinkText) el.click() 
+    return
+  }
 }
 
 findCourseName = () => {
-  const courseInfo = $('h4').text();
-  const courseName = courseInfo.split(' ');
-  courseName.pop();
-  courseName.pop();
-  courseName.shift();
-  return courseName.join(' ').slice(0, -1);
+  const courseInfo = document.querySelector('h4 span').innerText;
+  const courseName = courseInfo.split(',')[0].split(' ').slice(1).join(' ');
+  return courseName;
 }
 
 findStudyInfo = studyInfoHeading => {
-  const studyInfo = $(`h6:contains(${studyInfoHeading})`)
-    .siblings()
-    .find("div:first-child")
-    .text();
+  const studyInfo = []
+  for (el of document.querySelectorAll('h6')) {
+    if (el.innerText !== studyInfoHeading) continue
+    let element = el
+    while (element.nextSibling) {
+      element = element.nextSibling
+      if (element.nodeName !== '#comment') {
+        studyInfo.push(element.innerText.trim())
+      }
+    }
+  }
   return studyInfo;
 }
 
@@ -29,7 +33,7 @@ formatDateTime = (date, time) => {
 }
 
 parseEventObject = lectureInfoString => {
-  const lectureInfo = lectureInfoString.trim().split(' ');
+  const lectureInfo = lectureInfoString.split(' ');
   const lectureHall = lectureInfo[3];
   const buildingName = lectureInfo[4]
   const location = `${lectureHall} ${buildingName}`;
@@ -51,22 +55,21 @@ parseEventObject = lectureInfoString => {
   };
 }
 
-setLanguageSpecificStrings = () => {
-  const language = window.location.pathname.slice(1,3);
-  let showMore, lectureTimes;
-  if (language == 'en') {
-    showMore = 'Show more';
-    lectureTimes = 'Teaching';
-  } else {
-    showMore = 'Näytä lisää';
-    lectureTimes = 'Opetusajat'
-  }
-  return { showMore, lectureTimes }
-}
+getLanguage = () => window.location.pathname.slice(1,3);
 
-var translatedStrings = setLanguageSpecificStrings();
+var translatedStrings = getLanguage() === 'en'
+  ? {
+    showMore: 'Show more',
+    lectureTimes:'Teaching'
+  }
+  : {
+    showMore: 'Näytä lisää',
+    lectureTimes:'Opetusajat'
+  };
+
 expandStudyTimes(translatedStrings.showMore);
+
 var courseName = findCourseName();
 var studyInfo = findStudyInfo(translatedStrings.lectureTimes);
-var eventObjects = studyInfo.split('  ').map(parseEventObject);
+var eventObjects = studyInfo.map(parseEventObject);
 chrome.runtime.sendMessage({ data: eventObjects });
