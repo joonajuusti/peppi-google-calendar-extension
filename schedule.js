@@ -1,6 +1,6 @@
 expandStudyTimes = collapseLinkText => {
   for (el of document.querySelectorAll('div a')) {
-    if (el.innerText === collapseLinkText) el.click() 
+    if (el.innerText === collapseLinkText) el.click()
     return
   }
 }
@@ -33,14 +33,11 @@ formatDateTime = (date, time) => {
 }
 
 parseEventObject = lectureInfoString => {
-  const lectureInfo = lectureInfoString.split(' ');
-  const lectureHall = lectureInfo[3];
-  const buildingName = lectureInfo[4]
-  const location = `${lectureHall} ${buildingName}`;
-  const [startTime, endTime] = lectureInfo[2].split('-').map(time => formatDateTime(lectureInfo[1], time));
+  const [weekday, date, time, ...location] = lectureInfoString.split(' ');
+  const [startTime, endTime] = time.split('-').map(time => formatDateTime(date, time));
   return {
     summary: courseName,
-    location,
+    location: location.join(' '),
     start: {
       dateTime: startTime,
       timeZone: 'Europe/Helsinki',
